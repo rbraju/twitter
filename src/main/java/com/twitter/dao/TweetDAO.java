@@ -34,12 +34,11 @@ public class TweetDAO {
 			String bearerToken = getBearerToken(consumerKey, secret);
 
 			// Retrieve tweets from user timeline
-			response = client.target(Constants.ENDPOINT)
-								.path(Constants.TIMELINE_PATH)
-								.queryParam("screen_name", screenName).queryParam("exclude_replies", "true")
-								.request(MediaType.APPLICATION_JSON)
-								.header("Authorization", "Bearer " + bearerToken)
-								.get();
+			response = client.target(Constants.ENDPOINT).path(Constants.TIMELINE_PATH)
+					.queryParam("screen_name", screenName).queryParam("exclude_replies", "true")
+					.request(MediaType.APPLICATION_JSON)
+					.header("Authorization", "Bearer " + bearerToken)
+					.get();
 			
 			tweets = response.readEntity(new GenericType<List<Tweet>>() { });
 		} catch (Exception e) {
@@ -59,12 +58,11 @@ public class TweetDAO {
 		String credentials = consumerKey + ":" + secret;
 		String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
 
-		Response response = client.target(Constants.ENDPOINT)
-									.path(Constants.OAUTH_PATH)
-									.queryParam("grant_type", "client_credentials")
-									.request(MediaType.APPLICATION_JSON)
-									.header("Authorization", "Basic " + encodedCredentials)
-									.post(null);
+		Response response = client.target(Constants.ENDPOINT).path(Constants.OAUTH_PATH)
+					.queryParam("grant_type", "client_credentials")
+					.request(MediaType.APPLICATION_JSON)
+					.header("Authorization", "Basic " + encodedCredentials)
+					.post(null);
 		
 		BearerToken bearerToken = response.readEntity(BearerToken.class);
 		return bearerToken.getAccessToken();
